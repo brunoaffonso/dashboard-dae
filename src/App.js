@@ -1,6 +1,5 @@
 import Dashboard from './components/dashboard/Dashboard';
-import Data from './components/dashboard/Materiais';
-import Materiais from './components/dashboard/Materiais';
+import Materiais from './components/dashboard/MateriaisTest';
 
 function App() {
   return (
