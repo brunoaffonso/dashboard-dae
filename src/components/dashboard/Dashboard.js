@@ -22,6 +22,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Materiais from './Materiais';
+import AddModelTest from './AddModalTest';
 
 function Copyright() {
   return (
@@ -206,6 +207,11 @@ export default function Dashboard() {
             <Grid item xs={6}>
               <Paper className={classes.paper}>
                 <Materiais />
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper className={classes.paper}>
+                <AddModelTest />
               </Paper>
             </Grid>
           </Grid>
