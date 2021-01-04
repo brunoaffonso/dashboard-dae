@@ -22,14 +22,16 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Materiais from './Materiais';
-import AddModelTest from './AddModalTest';
+import AddModelUnidade from './AddModalUnidade';
+import AddModelMat from './AddModalMat';
+import Form from './Form';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://fiocruz.br/">
+        Fiocruz
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -198,20 +200,25 @@ export default function Dashboard() {
                 <Deposits />
               </Paper>
             </Grid>
+            <Grid item xs={6}>
+              <Paper className={classes.paper}>
+                <Form />
+              </Paper>
+            </Grid>
+            <Grid item xs={3}>
+              <Paper className={classes.paper}>
+                <AddModelUnidade />
+              </Paper>
+            </Grid>
+            <Grid item xs={3}>
+              <Paper className={classes.paper}>
+                <AddModelMat />
+              </Paper>
+            </Grid>
             {/* Lista de Materiais            */}
             <Grid item xs={6}>
               <Paper className={classes.paper}>
                 <Materiais />
-              </Paper>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper className={classes.paper}>
-                <Materiais />
-              </Paper>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper className={classes.paper}>
-                <AddModelTest />
               </Paper>
             </Grid>
           </Grid>
