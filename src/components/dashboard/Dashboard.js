@@ -21,11 +21,12 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
-import Materiais from './Materiais';
-import AddModelUnidade from './AddModalUnidade';
+import Materiais from './MatServ';
+import AddModalUnidade from './AddModalUnidade';
 import AddModelMat from './AddModalMat';
 import Form from './Form';
 import * as api from '../../api/serviceApi';
+import MateriaisShort from './Materiais';
 
 function Copyright() {
   return (
@@ -230,7 +231,12 @@ export default function Dashboard() {
             </Grid>
             <Grid item xs={6}>
               <Paper className={classes.paper}>
-                <AddModelUnidade />
+                <AddModalUnidade />
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <MateriaisShort />
               </Paper>
             </Grid>
             <Grid item xs={6}>

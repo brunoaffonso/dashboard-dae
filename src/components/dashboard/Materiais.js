@@ -1,28 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import Link from '@material-ui/core/Link';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Title from './Title';
 import * as api from '../../api/serviceApi';
 
-function preventDefault(event) {
-  event.preventDefault();
-}
-
-const useStyles = makeStyles((theme) => ({
-  seeMore: {
-    marginTop: theme.spacing(3),
+const columns = [
+  { id: 'numero_item', label: 'Item', minWidth: 80, align: 'center' },
+  { id: 'descricao', label: 'Descrição', minWidth: 200 },
+  {
+    id: 'quantidade_ano',
+    label: 'Quantidade Anual',
+    minWidth: 80,
+    align: 'center',
+    format: (value) => value.toLocaleString('pt-BR'),
   },
-}));
+  {
+    id: 'valor',
+    label: 'Valor',
+    minWidth: 80,
+    align: 'center',
+    format: (value) => value.toLocaleString('pt-BR'),
+  },
+];
+
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+  },
+  container: {
+    maxHeight: 440,
+  },
+});
 
 export default function Materiais() {
-  const [materiais, setMateriais] = useState([]);
+  const [materiais, setMateriais] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const getMateriais = async () => {
       await api.Materiais().then((r) => setMateriais(r));
     };
@@ -30,34 +49,71 @@ export default function Materiais() {
   }, []);
 
   const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   return (
-    <React.Fragment>
-      <Title>Materiais</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Item</TableCell>
-            <TableCell>Descrição</TableCell>
-            <TableCell>Quantidade</TableCell>
-            <TableCell>Valor</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {materiais.map((item) => (
-            <TableRow key={item.numero_item}>
-              <TableCell>{item.numero_item}</TableCell>
-              <TableCell>{item.descricao}</TableCell>
-              <TableCell>{item.quantidade_ano}</TableCell>
-              <TableCell>{item.valor}</TableCell>
+    <Paper className={classes.root}>
+      <TableContainer className={classes.container}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          Adicionar
-        </Link>
-      </div>
-    </React.Fragment>
+          </TableHead>
+          <TableBody>
+            {materiais
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((materiais) => {
+                return (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={materiais.numero_item}
+                  >
+                    {columns.map((column) => {
+                      const value = materiais[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format && typeof value === 'number'
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={materiais.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }

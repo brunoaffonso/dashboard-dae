@@ -43,7 +43,7 @@ export default function SimpleModal() {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">Inserir Unidade</h2>
+      <Title>Inserir Unidade</Title>
       <FormAddUnidade />
     </div>
   );

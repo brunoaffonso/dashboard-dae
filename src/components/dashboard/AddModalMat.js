@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Form from './Form';
+import * as api from '../../api/serviceApi';
 
 function getModalStyle() {
   const top = 50;
@@ -26,10 +27,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SimpleModal() {
+  const [materiais, setMateriais] = useState([]);
+  const [servicos, setServicos] = useState([]);
+  const [matServs, setMatServs] = useState([]);
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      await api.Materiais().then((res) => {
+        setMateriais(res);
+      });
+      await api.Servico().then((res) => {
+        setServicos(res);
+      });
+      await api.MatServ().then((res) => {
+        setMatServs(res);
+      });
+    };
+    getData();
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
@@ -39,6 +58,10 @@ export default function SimpleModal() {
     setOpen(false);
   };
 
+  console.log(materiais);
+  console.log(servicos);
+  console.log(matServs);
+
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">Text in a modal</h2>
@@ -46,7 +69,6 @@ export default function SimpleModal() {
         Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
       </p>
       <Form />
-      <SimpleModal />
     </div>
   );
 
