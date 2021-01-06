@@ -55,6 +55,7 @@ export default function SimpleModal() {
       <button type="button" onClick={handleOpen}>
         Open Modal
       </button>
+
       <Modal
         open={open}
         onClose={handleClose}

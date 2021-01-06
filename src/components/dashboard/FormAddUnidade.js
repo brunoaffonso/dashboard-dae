@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import * as api from '../../api/serviceApi';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,8 +19,10 @@ export default function BasicTextFields() {
 
   const handleButton = (event) => {
     event.preventDefault();
-    const buttonValue = document.getElementById('standard-basic');
-    console.log(buttonValue.value);
+    const value = { name: unidade };
+    api.insertUnidade(value);
+    setUnidade('');
+    console.log(unidade);
   };
 
   return (
@@ -27,7 +30,7 @@ export default function BasicTextFields() {
       <TextField
         id="standard-basic"
         label="Unidade"
-        value=""
+        value={unidade}
         onInput={(e) => setUnidade(e.target.value)}
       />
       <Button

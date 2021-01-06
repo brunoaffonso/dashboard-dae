@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import FormAddUnidade from './FormAddUnidade';
+import Button from '@material-ui/core/Button';
+import Title from './Title';
 
 function getModalStyle() {
   const top = 50;
@@ -43,15 +45,24 @@ export default function SimpleModal() {
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">Inserir Unidade</h2>
       <FormAddUnidade />
-      <SimpleModal />
     </div>
   );
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        Open Modal
-      </button>
+      <Title>Unidades</Title>
+      {/* <button type="button" onClick={handleOpen}>
+        Inserir Unidade
+      </button> */}
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        onClick={handleOpen}
+        className={classes.button}
+      >
+        Inserir Unidade
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}

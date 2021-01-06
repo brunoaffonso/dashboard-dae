@@ -25,6 +25,7 @@ import Materiais from './Materiais';
 import AddModelUnidade from './AddModalUnidade';
 import AddModelMat from './AddModalMat';
 import Form from './Form';
+import * as api from '../../api/serviceApi';
 
 function Copyright() {
   return (
@@ -38,6 +39,27 @@ function Copyright() {
     </Typography>
   );
 }
+
+async function getData() {
+  const unid = await api.Unidade();
+  const dept = await api.Departamento();
+  const sector = await api.Setor();
+  const cont = await api.Contrato();
+  const mats = await api.Materiais();
+  const estq = await api.Estoque();
+  const serv = await api.Servico();
+  const matserv = await api.MatServ();
+  console.log(unid);
+  console.log(dept);
+  console.log(sector);
+  console.log(cont);
+  console.log(mats);
+  console.log(estq);
+  console.log(serv);
+  console.log(matserv);
+}
+
+getData();
 
 const drawerWidth = 240;
 
@@ -123,6 +145,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -205,18 +228,18 @@ export default function Dashboard() {
                 <Form />
               </Paper>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <Paper className={classes.paper}>
                 <AddModelUnidade />
               </Paper>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={6}>
               <Paper className={classes.paper}>
                 <AddModelMat />
               </Paper>
             </Grid>
             {/* Lista de Materiais            */}
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Materiais />
               </Paper>

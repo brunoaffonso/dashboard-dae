@@ -12,7 +12,7 @@ export default function Materiais() {
     }
     results();
   }, []);
-  console.log(materiais);
+  // console.log(materiais);
   // const name = materiais[0].name;
   // console.log(name);
   return (

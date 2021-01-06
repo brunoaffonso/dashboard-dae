@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
+import * as api from '../../api/serviceApi';
 
 function preventDefault(event) {
   event.preventDefault();
@@ -22,13 +23,10 @@ export default function Materiais() {
   const [materiais, setMateriais] = useState([]);
 
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8000/materiais/';
-    async function results() {
-      const res = await fetch(apiUrl);
-      const json = await res.json();
-      setMateriais(json);
-    }
-    results();
+    const getMateriais = async () => {
+      await api.Materiais().then((r) => setMateriais(r));
+    };
+    getMateriais();
   }, []);
 
   const classes = useStyles();
