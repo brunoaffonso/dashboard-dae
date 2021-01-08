@@ -124,11 +124,11 @@ export async function MatServ() {
 // }
 
 export async function getServices() {
-  const matServs = await axios.get(apiMatServUrl);
-  const servicos = await axios.get(apiServicoUrl);
+  const matServs = await MatServ();
+  const servicos = await Servico();
 
-  const resServs = servicos.data.map((s) => {
-    const reqs = matServs.data.filter((m) => m.numero_rs === s.id);
+  const resServs = servicos.map((s) => {
+    const reqs = matServs.filter((m) => m.numero_rs === s.id);
     return {
       id: s.id,
       numero_rs: s.numero_rs,
@@ -143,7 +143,5 @@ export async function getServices() {
       reqs,
     };
   });
-
-  console.log(resServs);
   return resServs;
 }
