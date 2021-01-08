@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MatServ() {
+export default function MateriaisList() {
   const [materiais, setMateriais] = useState([]);
 
   useEffect(() => {

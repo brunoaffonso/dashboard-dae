@@ -21,12 +21,13 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
-import Materiais from './MatServ';
+import MateriaisList from './MatServ';
 import AddModalUnidade from './AddModalUnidade';
 import AddModelMat from './AddModalMat';
-import Form from './Form';
-import * as api from '../../api/serviceApi';
-import MateriaisShort from './Materiais';
+import FormAddServico from './FormAddServico';
+// import * as api from '../../api/serviceApi';
+import Materiais from './Materiais';
+import Unidades from './Unidades';
 
 function Copyright() {
   return (
@@ -41,26 +42,26 @@ function Copyright() {
   );
 }
 
-async function getData() {
-  const unid = await api.Unidade();
-  const dept = await api.Departamento();
-  const sector = await api.Setor();
-  const cont = await api.Contrato();
-  const mats = await api.Materiais();
-  const estq = await api.Estoque();
-  const serv = await api.Servico();
-  const matserv = await api.MatServ();
-  console.log(unid);
-  console.log(dept);
-  console.log(sector);
-  console.log(cont);
-  console.log(mats);
-  console.log(estq);
-  console.log(serv);
-  console.log(matserv);
-}
+// async function getData() {
+//   const unid = await api.Unidade();
+//   const dept = await api.Departamento();
+//   const sector = await api.Setor();
+//   const cont = await api.Contrato();
+//   const mats = await api.Materiais();
+//   const estq = await api.Estoque();
+//   const serv = await api.Servico();
+//   const matserv = await api.MatServ();
+//   console.log(unid);
+//   console.log(dept);
+//   console.log(sector);
+//   console.log(cont);
+//   console.log(mats);
+//   console.log(estq);
+//   console.log(serv);
+//   console.log(matserv);
+// }
 
-getData();
+// getData();
 
 const drawerWidth = 240;
 
@@ -224,9 +225,9 @@ export default function Dashboard() {
                 <Deposits />
               </Paper>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <Form />
+                <FormAddServico />
               </Paper>
             </Grid>
             <Grid item xs={6}>
@@ -236,7 +237,7 @@ export default function Dashboard() {
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <MateriaisShort />
+                <Materiais />
               </Paper>
             </Grid>
             <Grid item xs={6}>
@@ -247,7 +248,12 @@ export default function Dashboard() {
             {/* Lista de Materiais            */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <Materiais />
+                <MateriaisList />
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper className={classes.paper}>
+                <Unidades />
               </Paper>
             </Grid>
           </Grid>

@@ -30,6 +30,7 @@ export default function SimpleModal() {
   const [materiais, setMateriais] = useState([]);
   const [servicos, setServicos] = useState([]);
   const [matServs, setMatServs] = useState([]);
+  const [unidades, setUnidades] = useState([]);
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
@@ -37,15 +38,14 @@ export default function SimpleModal() {
 
   useEffect(() => {
     const getData = async () => {
-      await api.Materiais().then((res) => {
-        setMateriais(res);
-      });
-      await api.Servico().then((res) => {
-        setServicos(res);
-      });
-      await api.MatServ().then((res) => {
-        setMatServs(res);
-      });
+      const mats = await api.Materiais();
+      const serv = await api.Servico();
+      const ms = await api.MatServ();
+      const unid = await api.Unidade();
+      setMateriais(mats);
+      setServicos(serv);
+      setMatServs(ms);
+      setMatServs(unid);
     };
     getData();
   }, []);
@@ -57,10 +57,6 @@ export default function SimpleModal() {
   const handleClose = () => {
     setOpen(false);
   };
-
-  console.log(materiais);
-  console.log(servicos);
-  console.log(matServs);
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
