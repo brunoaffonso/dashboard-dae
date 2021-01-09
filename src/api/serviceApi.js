@@ -86,49 +86,11 @@ export async function MatServ() {
   return res.data;
 }
 
-// export async function getServices() {
-//   const matServs = await axios.get(apiMatServUrl);
-//   const servicos = await axios.get(apiServicoUrl);
-
-//   const getRes = async (rs) =>
-//     await matServs.data.filter((s) => s.numero_rs === rs);
-
-//   const resServs = await servicos.data.map((s) => {
-//     const reqs = getRes(s.id);
-//     const {
-//       numero_rs,
-//       numero_os,
-//       data_abertura,
-//       data_fechamento,
-//       unidade,
-//       departamento,
-//       setor,
-//       obs,
-//       custo,
-//     } = s;
-//     return {
-//       numero_rs,
-//       numero_os,
-//       data_abertura,
-//       data_fechamento,
-//       unidade,
-//       departamento,
-//       setor,
-//       obs,
-//       custo,
-//       reqs,
-//     };
-//   });
-//   console.log(resServs);
-//   return resServs;
-// }
-
 export async function getServices() {
-  const matServs = await MatServ();
-  const servicos = await Servico();
-
-  const resServs = servicos.map((s) => {
-    const reqs = matServs.filter((m) => m.numero_rs === s.id);
+  const matServ = await MatServ();
+  const serv = await Servico();
+  const res = serv.map((s) => {
+    const reqs = matServ.filter((m) => m.numero_rs === s.id);
     return {
       id: s.id,
       numero_rs: s.numero_rs,
@@ -143,5 +105,5 @@ export async function getServices() {
       reqs,
     };
   });
-  return resServs;
+  return res;
 }
