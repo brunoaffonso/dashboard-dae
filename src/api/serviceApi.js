@@ -86,11 +86,28 @@ export async function MatServ() {
   return res.data;
 }
 
+export async function insertMatServ(value) {
+  const response = await axios.post(apiMatServUrl, value);
+  return response.data.id;
+}
+
 export async function getServices() {
   const matServ = await MatServ();
   const serv = await Servico();
+  const mats = await Materiais();
   const res = serv.map((s) => {
-    const reqs = matServ.filter((m) => m.numero_rs === s.id);
+    const reqs = matServ
+      .filter((m) => m.numero_rs === s.id)
+      .map((s) => {
+        const matDesc = mats.filter((material) => material.id === s.material);
+        return {
+          id: s.id,
+          numero_rs: s.numero_rs,
+          material: s.material,
+          descricao: matDesc,
+          quantidade: s.quantidade,
+        };
+      });
     return {
       id: s.id,
       numero_rs: s.numero_rs,
