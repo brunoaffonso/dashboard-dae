@@ -25,25 +25,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FormAddServico() {
-  const [numeroRs, setNumeroRs] = useState([]);
-  const [numeroOs, setNumeroOs] = useState([]);
-  const [abertura, setAbertura] = useState([]);
-  const [fechamento, setFechamento] = useState([]);
+  const [numeroRs, setNumeroRs] = useState(null);
+  const [numeroOs, setNumeroOs] = useState(null);
+  const [abertura, setAbertura] = useState(null);
+  const [fechamento, setFechamento] = useState(null);
   const [unidades, setUnidades] = useState([]);
   const [materiais, setMateriais] = useState([]);
   const [departamentos, setDepartamentos] = useState([]);
   const [setores, setSetores] = useState([]);
-  const [selectedUnidade, setSelectedUnidade] = useState([]);
-  const [selectedDepto, setSelectedDepto] = useState([]);
-  const [selectedSetor, setSelectedSetor] = useState([]);
-  const [selectedMaterial, setSelectedMaterial] = useState([]);
-  const [selectedQuantidade, setSelectedQuantidade] = useState([]);
-  const [selectedObs, setSelectedObs] = useState([]);
-  const [obs, setObs] = useState([]);
+  const [selectedUnidade, setSelectedUnidade] = useState(null);
+  const [selectedDepto, setSelectedDepto] = useState(null);
+  const [selectedSetor, setSelectedSetor] = useState(null);
+  const [servicoId, setServicoId] = useState(null);
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [selectedQuantidade, setSelectedQuantidade] = useState(null);
+  const [selectedObs, setSelectedObs] = useState(null);
+  const [obs, setObs] = useState(null);
   const [results, setResults] = useState([]);
-  const [newService, setNewService] = useState('');
+  const [newService, setNewService] = useState(null);
   const [newMatServ, setNewMatServ] = useState([]);
-  const [idRs, setIdRs] = useState([]);
+  const [idRs, setIdRs] = useState(null);
   const [disabledDepartamento, setDisabledDepartamento] = useState(false);
   const [serviceDisabled, setServiceDisabled] = useState(false);
   const classes = useStyles();
@@ -55,7 +56,7 @@ export default function FormAddServico() {
 
   useEffect(() => {
     data();
-  }, []);
+  }, [newService]);
 
   const getData = async () => {
     const unid = await api.Unidade();
@@ -84,9 +85,14 @@ export default function FormAddServico() {
     if (newService) {
       setServiceDisabled(true);
       return (
-        <>
+        <div>
           <form className={classes.root} noValidate autoComplete="off">
-            <TextField disabled label="ID" value={newService} />
+            <TextField
+              onInput={(e) => servicoId(e.target.value)}
+              disabled
+              label="ID"
+              value={newService.id}
+            />
             <FormControl className={classes.formControl}>
               <InputLabel>Material</InputLabel>
               <Select
@@ -154,7 +160,7 @@ export default function FormAddServico() {
               Salvar
             </Button>
           </TableContainer>
-        </>
+        </div>
       );
     } else {
       return (
@@ -201,8 +207,10 @@ export default function FormAddServico() {
       obs: obs,
     };
     const resp = async (value) => {
-      const data = await api.insertServico(value);
-      setNewService(data);
+      const res = await api.insertServico(value);
+      await data();
+      let idServ = results.filter((id) => id.numero_rs === res);
+      setNewService(...idServ);
     };
     resp(value);
   };

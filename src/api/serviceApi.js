@@ -77,7 +77,7 @@ export async function Servico() {
 
 export async function insertServico(value) {
   const response = await axios.post(apiServicoUrl, value);
-  return response.data.id;
+  return response.data.numero_rs;
 }
 
 export async function MatServ() {
