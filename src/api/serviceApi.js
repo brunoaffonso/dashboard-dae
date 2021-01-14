@@ -77,13 +77,36 @@ export async function Servico() {
 
 export async function insertServico(value) {
   const response = await axios.post(apiServicoUrl, value);
-  return response.data.numero_rs;
+  return response.data;
+}
+
+export async function insertServico2(value) {
+  const response = await axios.post(apiServicoUrl, value);
+  const servicos = await getServices();
+  const serv = servicos
+    .filter(
+      (id) =>
+        id.numero_rs === response.data.numero_rs &&
+        id.data_fechamento === response.data.data_fechamento
+    )
+    .map((s) => {
+      return {
+        id: s.id,
+      };
+    });
+  const idServ = serv[0];
+  return idServ.id;
 }
 
 export async function MatServ() {
   const res = await axios.get(apiMatServUrl);
   // console.log(res.data);
   return res.data;
+}
+
+export async function insertMatServ(value) {
+  const response = await axios.post(apiMatServUrl, value);
+  return response.data;
 }
 
 export async function insertMatServ(value) {

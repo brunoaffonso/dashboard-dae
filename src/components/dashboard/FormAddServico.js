@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -25,40 +25,45 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FormAddServico() {
-  const [numeroRs, setNumeroRs] = useState(null);
-  const [numeroOs, setNumeroOs] = useState(null);
-  const [abertura, setAbertura] = useState(null);
-  const [fechamento, setFechamento] = useState(null);
+  const [numeroRs, setNumeroRs] = useState('');
+  const [numeroOs, setNumeroOs] = useState('');
+  const [abertura, setAbertura] = useState('');
+  const [fechamento, setFechamento] = useState('');
   const [unidades, setUnidades] = useState([]);
   const [materiais, setMateriais] = useState([]);
   const [departamentos, setDepartamentos] = useState([]);
   const [setores, setSetores] = useState([]);
-  const [selectedUnidade, setSelectedUnidade] = useState(null);
-  const [selectedDepto, setSelectedDepto] = useState(null);
-  const [selectedSetor, setSelectedSetor] = useState(null);
-  const [servicoId, setServicoId] = useState(null);
-  const [selectedMaterial, setSelectedMaterial] = useState(null);
-  const [selectedQuantidade, setSelectedQuantidade] = useState(null);
-  const [selectedObs, setSelectedObs] = useState(null);
-  const [obs, setObs] = useState(null);
-  const [results, setResults] = useState([]);
-  const [newService, setNewService] = useState(null);
+  const [selectedUnidade, setSelectedUnidade] = useState('');
+  const [selectedDepto, setSelectedDepto] = useState('');
+  const [selectedSetor, setSelectedSetor] = useState('');
+  const [selectedMaterial, setSelectedMaterial] = useState('');
+  const [selectedQuantidade, setSelectedQuantidade] = useState('');
+  const [selectedObs, setSelectedObs] = useState('');
+  const [obs, setObs] = useState('');
+  // const [results, setResults] = useState([]);
+  const [newService, setNewService] = useState('');
   const [newMatServ, setNewMatServ] = useState([]);
-  const [idRs, setIdRs] = useState(null);
-  const [disabledDepartamento, setDisabledDepartamento] = useState(false);
   const [serviceDisabled, setServiceDisabled] = useState(false);
+  const [matServDisabled, setMatServDisabled] = useState(true);
   const classes = useStyles();
 
-  const data = async () => {
-    const services = await api.getServices();
-    setResults(services);
-  };
+  // const data = async () => {
+  //   const services = await api.getServices();
+  //   setResults(services);
+  // };
+
+  // useEffect(() => {
+  //   data();
+  // }, [newService]);
 
   useEffect(() => {
-    data();
+    if (newService) {
+      setServiceDisabled(true);
+      setMatServDisabled(false);
+    }
   }, [newService]);
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     const unid = await api.Unidade();
     const depto = await api.Departamento();
     const setor = await api.Setor();
@@ -67,109 +72,11 @@ export default function FormAddServico() {
     setDepartamentos(depto);
     setSetores(setor);
     setMateriais(material);
-  };
-
-  useEffect(() => {
-    getData();
   }, []);
 
   useEffect(() => {
-    console.log(newService);
-  }, [newService]);
-
-  useEffect(() => {
-    console.log(newMatServ);
-  }, [newMatServ]);
-
-  const FormServico = () => {
-    if (newService) {
-      setServiceDisabled(true);
-      return (
-        <div>
-          <form className={classes.root} noValidate autoComplete="off">
-            <TextField
-              onInput={(e) => servicoId(e.target.value)}
-              disabled
-              label="ID"
-              value={newService.id}
-            />
-            <FormControl className={classes.formControl}>
-              <InputLabel>Material</InputLabel>
-              <Select
-                native
-                onChange={(e) => setSelectedMaterial(parseInt(e.target.value))}
-              >
-                <option aria-label="None" value="" />
-                {materiais.map((material) => (
-                  <option key={material.id} value={material.id}>
-                    {material.numero_item} - {material.descricao}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-            <TextField
-              label="Quantidade"
-              value={selectedQuantidade}
-              onInput={(e) => setSelectedQuantidade(e.target.value)}
-            />
-            <TextField
-              label="Observações"
-              value={selectedObs}
-              onInput={(e) => setSelectedObs(e.target.value)}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              onClick={handleButtonTempService}
-              className={classes.button}
-            >
-              Inserir
-            </Button>
-          </form>
-          <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">Código</TableCell>
-                  <TableCell>Descrição</TableCell>
-                  <TableCell align="center">Quantidade</TableCell>
-                  <TableCell align="center">Comentários</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {newMatServ.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell align="center">{row.numero_item}</TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.descricao}
-                    </TableCell>
-                    <TableCell align="center">{row.quantidade}</TableCell>
-                    <TableCell align="center">{row.comentarios}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              onClick={handleButtonTempService}
-              className={classes.button}
-            >
-              Salvar
-            </Button>
-          </TableContainer>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <h3>Adicione um novo serviço</h3>
-        </div>
-      );
-    }
-  };
+    getData();
+  }, [getData]);
 
   // const handleButton = (event) => {
   //   event.preventDefault();
@@ -194,7 +101,7 @@ export default function FormAddServico() {
   //   setObs('');
   // };
 
-  const handleButton = (event) => {
+  const handleButton = async (event) => {
     event.preventDefault();
     const value = {
       numero_rs: numeroRs,
@@ -207,26 +114,47 @@ export default function FormAddServico() {
       obs: obs,
     };
     const resp = async (value) => {
-      const res = await api.insertServico(value);
-      await data();
-      let idServ = results.filter((id) => id.numero_rs === res);
-      setNewService(...idServ);
+      const res = await api.insertServico2(value);
+      // await data();
+      // const idServ = results.filter(
+      //   (id) =>
+      //     id.numero_rs === res.numero_rs &&
+      //     id.data_fechamento === res.data_fechamento
+      // );
+      // setNewService(...idServ);
+      setNewService(res);
     };
-    resp(value);
+    await resp(value);
   };
 
   const handleButtonTempService = (event) => {
     event.preventDefault();
     const mat = materiais.filter((m) => m.id === selectedMaterial);
-    console.log(mat[0].descricao);
     const value = {
-      id: mat[0].id,
-      numero_item: mat[0].numero_item,
-      descricao: mat[0].descricao,
+      numero_rs: newService,
+      material: mat[0].id,
       quantidade: selectedQuantidade,
       comentarios: selectedObs,
+      numero_item: mat[0].numero_item,
+      descricao: mat[0].descricao,
     };
     setNewMatServ((prevState) => [...prevState, value]);
+    setSelectedMaterial('');
+    setSelectedQuantidade('');
+    setSelectedObs('');
+  };
+
+  const saveMatServs = async (event) => {
+    event.preventDefault();
+    newMatServ.forEach((ms) => {
+        const value = {
+        numero_rs: ms.numero_rs,
+        material: ms.material,
+        quantidade: ms.quantidade,
+      }
+      api.insertMatServ(value);
+    })
+    };
   };
 
   return (
@@ -285,7 +213,6 @@ export default function FormAddServico() {
           <InputLabel>Departamento</InputLabel>
           <Select
             disabled={serviceDisabled}
-            id="select-departamento"
             native
             onChange={(e) => setSelectedDepto(parseInt(e.target.value))}
           >
@@ -325,6 +252,7 @@ export default function FormAddServico() {
           onInput={(e) => setObs(e.target.value)}
         />
         <Button
+          disabled={serviceDisabled}
           type="submit"
           variant="contained"
           color="primary"
@@ -335,7 +263,83 @@ export default function FormAddServico() {
         </Button>
       </form>
       <Divider />
-      <FormServico />
+      <form className={classes.root} noValidate autoComplete="off">
+        <TextField
+          disabled
+          label=" "
+          value={`ID: ${newService} | RS: ${numeroRs}`}
+          size="small"
+        />
+        <FormControl className={classes.formControl}>
+          <InputLabel>Material</InputLabel>
+          <Select
+            disabled={matServDisabled}
+            native
+            onChange={(e) => setSelectedMaterial(parseInt(e.target.value))}
+          >
+            <option aria-label="None" value="" />
+            {materiais.map((material) => (
+              <option key={material.id} value={material.id}>
+                {material.numero_item} - {material.descricao}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+        <TextField
+          disabled={matServDisabled}
+          label="Quantidade"
+          value={selectedQuantidade}
+          onInput={(e) => setSelectedQuantidade(e.target.value)}
+        />
+        <TextField
+          disabled={matServDisabled}
+          label="Comentários"
+          value={selectedObs}
+          onInput={(e) => setSelectedObs(e.target.value)}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={handleButtonTempService}
+          className={classes.button}
+        >
+          Inserir
+        </Button>
+      </form>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Código</TableCell>
+              <TableCell>Descrição</TableCell>
+              <TableCell align="center">Quantidade</TableCell>
+              <TableCell align="center">Comentários</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {newMatServ.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell align="center">{row.numero_item}</TableCell>
+                <TableCell component="th" scope="row">
+                  {row.descricao}
+                </TableCell>
+                <TableCell align="center">{row.quantidade}</TableCell>
+                <TableCell align="center">{row.comentarios}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={handleButtonTempService}
+          className={classes.button}
+        >
+          Salvar
+        </Button>
+      </TableContainer>
     </div>
   );
 }
