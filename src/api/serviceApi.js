@@ -109,12 +109,13 @@ export async function insertMatServ(value) {
   return response.data;
 }
 
-export async function insertMatServ(value) {
-  const response = await axios.post(apiMatServUrl, value);
-  return response.data.id;
-}
+// export async function insertMatServ(value) {
+//   const response = await axios.post(apiMatServUrl, value);
+//   return response.data.id;
+// }
 
 export async function getServices() {
+  const unidades = await Unidade();
   const matServ = await MatServ();
   const serv = await Servico();
   const mats = await Materiais();
@@ -127,17 +128,19 @@ export async function getServices() {
           id: s.id,
           numero_rs: s.numero_rs,
           material: s.material,
-          descricao: matDesc,
+          descricao: matDesc[0],
           quantidade: s.quantidade,
+          comentarios: s.comentarios,
         };
       });
+    const unid = unidades.filter((u) => u.id === s.unidade);
     return {
       id: s.id,
       numero_rs: s.numero_rs,
       numero_os: s.numero_os,
       data_abertura: s.data_abertura,
       data_fechamento: s.data_fechamento,
-      unidade: s.unidade,
+      unidade: unid[0].name,
       departamento: s.departamento,
       setor: s.setor,
       obs: s.obs,

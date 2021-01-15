@@ -40,26 +40,16 @@ export default function FormAddServico() {
   const [selectedQuantidade, setSelectedQuantidade] = useState('');
   const [selectedObs, setSelectedObs] = useState('');
   const [obs, setObs] = useState('');
-  // const [results, setResults] = useState([]);
   const [newService, setNewService] = useState('');
   const [newMatServ, setNewMatServ] = useState([]);
   const [serviceDisabled, setServiceDisabled] = useState(false);
   const [matServDisabled, setMatServDisabled] = useState(true);
   const classes = useStyles();
 
-  // const data = async () => {
-  //   const services = await api.getServices();
-  //   setResults(services);
-  // };
-
-  // useEffect(() => {
-  //   data();
-  // }, [newService]);
-
   useEffect(() => {
     if (newService) {
-      setServiceDisabled(true);
-      setMatServDisabled(false);
+      setServiceDisabled((prevState) => !prevState);
+      setMatServDisabled((prevState) => !prevState);
     }
   }, [newService]);
 
@@ -78,29 +68,6 @@ export default function FormAddServico() {
     getData();
   }, [getData]);
 
-  // const handleButton = (event) => {
-  //   event.preventDefault();
-  //   const value = {
-  //     numero_rs: numeroRs,
-  //     numero_os: numeroOs,
-  //     data_abertura: abertura,
-  //     data_fechamento: fechamento,
-  //     unidade: selectedUnidade,
-  //     departamento: selectedDepto,
-  //     setor: selectedSetor,
-  //     obs: obs,
-  //   };
-  //   api.insertServico(value);
-  //   setNumeroRs('');
-  //   setNumeroOs('');
-  //   setAbertura('');
-  //   setFechamento('');
-  //   setSelectedUnidade('');
-  //   setSelectedDepto('');
-  //   setSelectedSetor('');
-  //   setObs('');
-  // };
-
   const handleButton = async (event) => {
     event.preventDefault();
     const value = {
@@ -115,13 +82,6 @@ export default function FormAddServico() {
     };
     const resp = async (value) => {
       const res = await api.insertServico2(value);
-      // await data();
-      // const idServ = results.filter(
-      //   (id) =>
-      //     id.numero_rs === res.numero_rs &&
-      //     id.data_fechamento === res.data_fechamento
-      // );
-      // setNewService(...idServ);
       setNewService(res);
     };
     await resp(value);
@@ -147,14 +107,29 @@ export default function FormAddServico() {
   const saveMatServs = async (event) => {
     event.preventDefault();
     newMatServ.forEach((ms) => {
-        const value = {
+      const value = {
         numero_rs: ms.numero_rs,
         material: ms.material,
         quantidade: ms.quantidade,
-      }
+        comentarios: ms.comentarios,
+      };
       api.insertMatServ(value);
-    })
-    };
+    });
+    setNumeroRs('');
+    setNumeroOs('');
+    setAbertura('');
+    setFechamento('');
+    setSelectedUnidade('');
+    setSelectedDepto('');
+    setSelectedSetor('');
+    setObs('');
+    setSelectedMaterial('');
+    setSelectedQuantidade('');
+    setSelectedObs('');
+    setNewService('');
+    setNewMatServ([]);
+    setServiceDisabled((prevState) => !prevState);
+    setMatServDisabled((prevState) => !prevState);
   };
 
   return (
@@ -334,7 +309,7 @@ export default function FormAddServico() {
           type="submit"
           variant="contained"
           color="primary"
-          onClick={handleButtonTempService}
+          onClick={saveMatServs}
           className={classes.button}
         >
           Salvar

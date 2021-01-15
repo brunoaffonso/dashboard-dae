@@ -228,6 +228,11 @@ export default function Dashboard() {
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
+                <Servicos />
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
                 <FormAddServico />
               </Paper>
             </Grid>
@@ -255,11 +260,6 @@ export default function Dashboard() {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Unidades />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Servicos />
               </Paper>
             </Grid>
           </Grid>
