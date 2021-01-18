@@ -75,6 +75,20 @@ export async function Servico() {
   return res.data;
 }
 
+export async function getServico(id) {
+  const res = await axios.get(`${apiServicoUrl}${id}`);
+  return res.data;
+}
+
+export async function deleteServico(id) {
+  const res = await axios.delete(`${apiServicoUrl}${id}`);
+  const matServ = await MatServ();
+  const reqs = matServ
+    .filter((m) => m.numero_rs === id)
+    .forEach((s) => deleteMatServ(s.id));
+  return [res.data, reqs.data];
+}
+
 export async function insertServico(value) {
   const response = await axios.post(apiServicoUrl, value);
   return response.data;
@@ -107,6 +121,11 @@ export async function MatServ() {
 export async function insertMatServ(value) {
   const response = await axios.post(apiMatServUrl, value);
   return response.data;
+}
+
+export async function deleteMatServ(id) {
+  const res = await axios.delete(`${apiMatServUrl}/${id}`);
+  return res.data;
 }
 
 // export async function insertMatServ(value) {

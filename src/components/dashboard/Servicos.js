@@ -10,25 +10,34 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Title from './Title';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import Link from '@material-ui/core/Link';
 import * as api from '../../api/serviceApi';
 
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-});
+const useRowStyles = makeStyles();
+// const useRowStyles = makeStyles({
+//   root: {
+//     '& > *': {
+//       // borderBottom: 'unset',
+//     },
+//   },
+// });
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
+
+  const servicoDesc = async (id, event) => {
+    event.preventDefault();
+    const resp = await api.deleteServico(id);
+    // console.log(resp);
+  };
 
   return (
     <React.Fragment>
@@ -42,24 +51,31 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.id}
-        </TableCell>
         <TableCell align="left">{row.unidade}</TableCell>
-        <TableCell align="center">{row.data_abertura}</TableCell>
         <TableCell align="center">{row.data_fechamento}</TableCell>
         <TableCell align="center">{row.numero_rs}</TableCell>
         <TableCell align="center">{row.numero_os}</TableCell>
-        <TableCell align="left">{row.obs}</TableCell>
         <TableCell align="left">{row.custo}</TableCell>
+        <TableCell align="left">
+          <Link href="#" onClick={(e) => console.log(row)}>
+            <EditOutlinedIcon
+              fontSize="medium"
+              color="primary"
+            ></EditOutlinedIcon>
+          </Link>
+        </TableCell>
+        <TableCell align="left">
+          <Link href="_blank" onClick={(e) => servicoDesc(row.id, e)}>
+            <DeleteForeverOutlinedIcon fontSize="medium" color="secondary">
+              Link
+            </DeleteForeverOutlinedIcon>
+          </Link>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                Materiais Utilizados
-              </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -131,14 +147,13 @@ export default function Servicos() {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell align="center">Id</TableCell>
             <TableCell align="left">Unidade</TableCell>
-            <TableCell align="center">Data de Abertura</TableCell>
             <TableCell align="center">Data de Fechamento</TableCell>
             <TableCell align="center">RS</TableCell>
             <TableCell align="center">OS</TableCell>
-            <TableCell align="left">Observações</TableCell>
             <TableCell align="left">Custo</TableCell>
+            <TableCell align="left"></TableCell>
+            <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

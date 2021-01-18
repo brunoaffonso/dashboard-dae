@@ -273,6 +273,7 @@ export default function FormAddServico() {
           onInput={(e) => setSelectedObs(e.target.value)}
         />
         <Button
+          disabled={matServDisabled}
           type="submit"
           variant="contained"
           color="primary"
@@ -306,6 +307,7 @@ export default function FormAddServico() {
           </TableBody>
         </Table>
         <Button
+          disabled={matServDisabled}
           type="submit"
           variant="contained"
           color="primary"
