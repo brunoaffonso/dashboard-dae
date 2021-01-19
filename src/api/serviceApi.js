@@ -89,6 +89,14 @@ export async function deleteServico(id) {
   return [res.data, reqs.data];
 }
 
+export async function deleteServico2(id) {
+  const res = fetch(`${apiServicoUrl}${id}`, {
+    method: 'DELETE',
+  });
+  // const res = await axios.delete(`${apiServicoUrl}${id}`);
+  return res;
+}
+
 export async function insertServico(value) {
   const response = await axios.post(apiServicoUrl, value);
   return response.data;

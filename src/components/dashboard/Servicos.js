@@ -35,8 +35,8 @@ function Row(props) {
 
   const servicoDesc = async (id, event) => {
     event.preventDefault();
-    const resp = await api.deleteServico(id);
-    // console.log(resp);
+    const resp = await api.deleteServico2(id);
+    console.log(resp);
   };
 
   return (
