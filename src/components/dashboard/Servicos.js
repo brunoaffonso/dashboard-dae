@@ -57,19 +57,18 @@ function Row(props) {
         <TableCell align="center">{row.numero_os}</TableCell>
         <TableCell align="left">{row.custo}</TableCell>
         <TableCell align="left">
-          <Link href="#" onClick={(e) => console.log(row)}>
+          <IconButton aria-label="delete" className={classes.margin}>
             <EditOutlinedIcon
-              fontSize="medium"
               color="primary"
-            ></EditOutlinedIcon>
-          </Link>
-        </TableCell>
-        <TableCell align="left">
-          <Link href="_blank" onClick={(e) => servicoDesc(row.id, e)}>
-            <DeleteForeverOutlinedIcon fontSize="medium" color="secondary">
-              Link
-            </DeleteForeverOutlinedIcon>
-          </Link>
+              onClick={(e) => console.log(row)}
+            />
+          </IconButton>
+          <IconButton aria-label="delete" className={classes.margin}>
+            <DeleteForeverOutlinedIcon
+              color="secondary"
+              onClick={(e) => servicoDesc(row.id, e)}
+            />
+          </IconButton>
         </TableCell>
       </TableRow>
       <TableRow>

@@ -90,11 +90,28 @@ export async function deleteServico(id) {
 }
 
 export async function deleteServico2(id) {
-  const res = fetch(`${apiServicoUrl}${id}`, {
-    method: 'DELETE',
-  });
+  axios.defaults.baseURL = 'http://127.0.0.1:8000/';
+
+  const header = {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('JWTAccess'),
+    },
+  };
+  const payload = {
+    testValue: 'Hello API',
+  };
+
+  axios
+    .delete(`servico/${id}`, payload, header)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
   // const res = await axios.delete(`${apiServicoUrl}${id}`);
-  return res;
+  return null;
 }
 
 export async function insertServico(value) {
