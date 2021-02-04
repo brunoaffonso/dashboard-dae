@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const apiUnidadesUrl = 'http://127.0.0.1:8000/core/unidade/';
-const apiDepartamentoUrl = 'http://127.0.0.1:8000/core/departamento/';
-const apiSetorUrl = 'http://127.0.0.1:8000/core/setor/';
-const apiContratoUrl = 'http://127.0.0.1:8000/core/contrato/';
-const apiMateriaisUrl = 'http://127.0.0.1:8000/materiais/';
-const apiEstoqueUrl = 'http://127.0.0.1:8000/estoque/';
-const apiServicoUrl = 'http://127.0.0.1:8000/servico/';
-const apiMatServUrl = 'http://127.0.0.1:8000/matserv/';
+const apiUnidadesUrl = 'http://127.0.0.1:3001/unidade/';
+const apiDepartamentoUrl = 'http://127.0.0.1:3001/departamento/';
+const apiSetorUrl = 'http://127.0.0.1:3001/core/setor/';
+const apiContratoUrl = 'http://127.0.0.1:3001/contrato/';
+const apiMateriaisUrl = 'http://127.0.0.1:3001/material/';
+const apiEstoqueUrl = 'http://127.0.0.1:3001/estoque/';
+const apiServicoUrl = 'http://127.0.0.1:3001/servico/';
+const apiMatServUrl = 'http://127.0.0.1:3001/matserv/';
 
 export async function Unidade() {
   const res = await axios.get(apiUnidadesUrl);
@@ -48,7 +48,7 @@ export async function Contrato() {
 
 export async function Materiais() {
   const res = await axios.get(apiMateriaisUrl);
-  // console.log(res.data);
+  console.log(res.data);
 
   const mats = res.data.map((mat) => {
     const { id, numero_item, descricao, quantidade_ano, valor } = mat;
@@ -184,7 +184,7 @@ export async function getServices() {
       numero_os: s.numero_os,
       data_abertura: s.data_abertura,
       data_fechamento: s.data_fechamento,
-      unidade: unid[0].name,
+      unidade: unid[0],
       departamento: s.departamento,
       setor: s.setor,
       obs: s.obs,
